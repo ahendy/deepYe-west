@@ -1,8 +1,11 @@
-
+import xml.etree.ElementTree as ET
 import requests
 import xml
 import urllib
 
+
+song_list_path = "kanye-songs.txt"
+base_url = 'http://api.chartlyrics.com/apiv1.asmx/%s'
 
 """
 With http://www.chartlyrics.com/api.aspx
@@ -13,6 +16,26 @@ then, use XML parser to retrive LyricId, LyricChecksum.
 Now call GetLyric api with 
 GetLyric?lyricId=<LyricID>&lyricCheckSum=<LyricCheckSum>
 """
+with open(song_list_path, 'r') as f:
+	
+	lines = f.readlines()
+	for title in lines:	
+		
+		lyric_url = base_url % ("SearchLyric")  
+		params = {
+			'artist': 'Kanye West',
+			'song': title
+		}
+		response = requests.get(lyric_url, params)
+		print response.status_code
 
-params = {'artist': 'Kanye West'}
-import pdb;pdb.set_trace()
+		if response.status_code == 200:
+			
+			song_xml = response.text
+			e = ET.fromstring(song_xml)
+			for serach_result in e.findall('SerachLyricResult'):
+				
+				print serach_result.attrib
+		
+		else:
+			print 'API error:', response.text
