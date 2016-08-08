@@ -1,7 +1,7 @@
 import twitter
 from twitter import TwitterError
 
-from config import (
+from conf import (
     TWITTER_CONSUMER_KEY,
     TWITTER_CONSUMER_SECRET,
     TWITTER_ACCESS_TOKEN_KEY,
@@ -15,7 +15,7 @@ api = twitter.Api(
 
 KANYE = '@kanyewest'
 MAX_TWEETS = 1000
-fname = 'kanye'
+fname = 'data/kanyetweet'
 file = '.'.join([fname, 'txt'])
 
 with open(file, 'w') as f:
